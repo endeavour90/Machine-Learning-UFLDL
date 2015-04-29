@@ -16,9 +16,25 @@ function [f,g] = linear_regression(theta, X,y)
   %
   % TODO:  Compute the linear regression objective by looping over the examples in X.
   %        Store the objective function value in 'f'.
-  %
+  % 
   % TODO:  Compute the gradient of the objective with respect to theta by looping over
   %        the examples in X and adding up the gradient for each example.  Store the
   %        computed gradient in 'g'.
   
 %%% YOUR CODE HERE %%%
+
+for i = 1 : m
+    hyp = hypothesis(theta, X(:, i));
+    f = f + (hyp - y(i))^2;
+    g = g + X(:,i).*((hyp - y(i)).*ones(n,1));
+end
+f = f*0.5;
+end
+
+function h = hypothesis(theta, x)
+    h = theta'*x;
+end
+
+
+
+  
