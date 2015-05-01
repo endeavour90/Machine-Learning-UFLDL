@@ -15,7 +15,6 @@ function [f,g] = softmax_regression(theta, X,y)
 
   % theta is a vector;  need to reshape to n x num_classes.
   theta=reshape(theta, n, []);
-  num_classes=size(theta,2)+1;
   
   % initialize objective value and gradient.
   f = 0;
@@ -27,6 +26,18 @@ function [f,g] = softmax_regression(theta, X,y)
   %        Before returning g, make sure you form it back into a vector with g=g(:);
   %
 %%% YOUR CODE HERE %%%
+    incomplete_cond_prob = bsxfun(@rdivide, exp(theta'*X), 1+sum(exp(theta'*X)));
+    cond_prob = [incomplete_cond_prob; 1 - sum(incomplete_cond_prob)];
+    log_cond_prob = log(cond_prob);
+    index = sub2ind(size(log_cond_prob), y, 1:size(log_cond_prob,2));
+    f = -sum(log_cond_prob(index));
+    
+    for k = 1 : size(theta,2)
+        g(:,k) = -sum(bsxfun(@times, X, (y==k) - cond_prob(k,:)),2);
+    end
+    
+    g=g(:); % make gradient a vector for minFunc
   
-  g=g(:); % make gradient a vector for minFunc
+end
+
 
