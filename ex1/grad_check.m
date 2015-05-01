@@ -26,3 +26,4 @@ function average_error = grad_check(fun, theta0, num_checks, varargin)
   end
 
   average=sum_error/num_checks;
+end
